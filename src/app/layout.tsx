@@ -28,7 +28,7 @@ export default function RootLayout({
         {/* header */}
         <AppHeader />
         {/* body */}
-        <main>{children}</main>
+        <main className="mx-auto max-w-[1300px] p-4">{children}</main>
         {/* footer */}
         <Toaster />
       </body>

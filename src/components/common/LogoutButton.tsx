@@ -1,19 +1,53 @@
 'use client'
 
 import { logout } from '@/lib/actions/auth'
+import { PropsWithChildren } from 'react'
 import { toast } from 'react-hot-toast'
 import { LuLogOut } from 'react-icons/lu'
+import { PiUserThin } from 'react-icons/pi'
 import { Button } from '../ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 
-export function LogoutButton() {
+export function LogoutButton({ children }: PropsWithChildren) {
   const handleLogout = async () => {
     await logout()
     toast.success('已登出')
   }
 
   return (
-    <Button variant="ghost" onClick={handleLogout} title="logout">
-      <LuLogOut />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={'ghost'}>{children}</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-32">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            Profile
+            <DropdownMenuShortcut>
+              <PiUserThin />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout} title="logout">
+          Logout
+          <DropdownMenuShortcut>
+            <LuLogOut />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

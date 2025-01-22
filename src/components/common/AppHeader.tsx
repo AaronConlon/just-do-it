@@ -2,14 +2,14 @@ import { globalConfig } from '@/config'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import Login from './Login'
+import Account from './Account'
 
 export default function AppHeader() {
   return (
     <header className="flex items-center justify-between p-4">
       <Link href="/" className="flex items-center">
-        <Image src="/logo.svg" alt="logo" width={40} height={40} />
-        <h1 className="ml-2 text-2xl font-bold">{globalConfig.site.name}</h1>
+        <Image src="/logo.svg" alt="logo" width={32} height={32} />
+        <h1 className="ml-2 font-bold">{globalConfig.site.name}</h1>
       </Link>
       <div className="flex items-center">
         {/* <section className="mr-12 text-2xl font-semibold md:text-orange-400">
@@ -26,7 +26,7 @@ export default function AppHeader() {
           <Button variant="link">Contact</Button>
         </Link>
       </div>
-      <Login />
+      <Account />
     </header>
   )
 }

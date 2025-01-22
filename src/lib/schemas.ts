@@ -8,3 +8,28 @@ export const UserSchema = z.object({
 })
 
 export type User = z.infer<typeof UserSchema>
+
+export enum EAppStatus {
+  DEV,
+  PROD,
+}
+
+export const AppSchema = z.object({
+  id: z.number(),
+  app_name: z.string(),
+  created_at: z.number(),
+  updated_at: z.number(),
+  // number 0 or 1
+  status: z.number().int().min(0).max(1),
+  description: z.string(),
+  platform: z.string(),
+  tags: z.string(),
+  categories: z.string(),
+  icon: z.string(),
+  url: z.string(),
+  is_free: z.number().int().min(0).max(1),
+  user_count: z.number().int(),
+  rank: z.number().int(),
+})
+
+export type TApp = z.infer<typeof AppSchema>

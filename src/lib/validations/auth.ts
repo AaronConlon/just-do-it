@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { IData } from './basic'
 
 export const loginSchema = z.object({
   email: z.string().email('请输入有效的邮箱地址'),
@@ -26,12 +27,6 @@ export enum EAccountStatus {
   SUSPENDED = 2,
 }
 
-interface Auth<T> {
-  data: T
-  message?: string
-  code: number
-}
-
 interface AuthData {
   user: {
     username: string
@@ -41,10 +36,10 @@ interface AuthData {
   token: string
 }
 
-export type AuthResponse = Auth<AuthData>
+export type AuthResponse = IData<AuthData>
 
 interface RegisterData {
   token: string
 }
 
-export type RegisterResponse = Auth<RegisterData>
+export type RegisterResponse = IData<RegisterData>

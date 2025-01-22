@@ -20,6 +20,12 @@ export function RegisterDialog() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      username: 'Aaron',
+      email: 'rivenqinyy@gmail.com',
+      password: '123456',
+      confirmPassword: '123456',
+    },
   })
 
   const onSubmit = async (data: RegisterForm) => {
