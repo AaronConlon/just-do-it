@@ -5,9 +5,10 @@ export const UserSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   createdAt: z.string().datetime(),
+  avatar: z.string().default('https://avatars.githubusercontent.com/u/124599?v=4'),
 })
 
-export type User = z.infer<typeof UserSchema>
+export type TUser = z.infer<typeof UserSchema>
 
 export enum EAppStatus {
   DEV,
@@ -29,7 +30,9 @@ export const AppSchema = z.object({
   url: z.string(),
   is_free: z.number().int().min(0).max(1),
   user_count: z.number().int(),
-  rank: z.number().int(),
+  score: z.number().int(),
+  price: z.number().int(),
+  detail: z.string(),
 })
 
 export type TApp = z.infer<typeof AppSchema>

@@ -14,7 +14,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
   return (
     <Link
       href={{
-        pathname: `/applications/${application.id}`,
+        pathname: `/apps/${application.id}`,
       }}
       target="_blank"
       rel="noopener noreferrer"
@@ -55,10 +55,16 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
                 <span>{application.user_count}</span>
               </div>
             ) : (
-              'No users yet'
+              <span className="text-sm font-thin text-gray-600">暂无用户</span>
             )}
 
-            <Rating size="sm" max={5} value={application.rank} className="text-orange-400" />
+            <Rating
+              size="sm"
+              disabled
+              max={5}
+              value={application.score}
+              className="text-orange-600"
+            />
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,7 @@
 'use client'
 
 import { logout } from '@/lib/actions/auth'
+import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { toast } from 'react-hot-toast'
 import { LuLogOut } from 'react-icons/lu'
@@ -32,12 +33,14 @@ export function LogoutButton({ children }: PropsWithChildren) {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>
-              <PiUserThin />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href={'/profile'}>
+            <DropdownMenuItem>
+              Profile
+              <DropdownMenuShortcut>
+                <PiUserThin />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

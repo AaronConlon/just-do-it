@@ -1,3 +1,4 @@
+import AppFooter from '@/components/common/AppFooter'
 import AppHeader from '@/components/common/AppHeader'
 import { globalConfig } from '@/config'
 import type { Metadata } from 'next'
@@ -28,9 +29,10 @@ export default function RootLayout({
         {/* header */}
         <AppHeader />
         {/* body */}
-        <main className="mx-auto max-w-[1300px] p-4">{children}</main>
+        <main className="mx-auto min-h-[65vh] max-w-[1300px] p-4">{children}</main>
         {/* footer */}
         <Toaster />
+        <AppFooter />
       </body>
     </html>
   )

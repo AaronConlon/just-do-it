@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { AuthResponse, LoginForm, RegisterForm, RegisterResponse } from '../validations/auth'
+import { generateHeaders } from './headers'
 
 async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -91,5 +92,63 @@ export async function register(data: RegisterForm) {
   } catch (error) {
     console.error(error)
     return { success: false, error: '注册失败' }
+  }
+}
+
+export async function updateProfile(data: { username: string; avatar: string }) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/accounts/profile`, {
+      method: 'PUT',
+      headers: await generateHeaders(),
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '更新失败' }
+    }
+
+    const result = await response.json()
+    return { success: result.code === 0, error: result.message }
+  } catch (error) {
+    return { success: false, error: '更新失败，请稍后重试' }
+  }
+}
+
+export async function resetPassword() {
+  try {
+    const response = await fetch(`${process.env.API_URL}/accounts/reset-password`, {
+      method: 'POST',
+      headers: await generateHeaders(),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '发送失败' }
+    }
+
+    const result = await response.json()
+    return { success: result.code === 0, error: result.message }
+  } catch (error) {
+    return { success: false, error: '发送失败，请稍后重试' }
+  }
+}
+
+export async function updatePassword(token: string, password: string) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/accounts/update-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token, password }),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '修改失败' }
+    }
+
+    const result = await response.json()
+    return { success: result.code === 0, error: result.message }
+  } catch (error) {
+    return { success: false, error: '修改失败，请稍后重试' }
   }
 }

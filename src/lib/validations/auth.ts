@@ -32,6 +32,10 @@ interface AuthData {
     username: string
     email: string
     status: EAccountStatus
+    app_ids: number[]
+    avatar: string
+    id?: number
+    created_at: number
   }
   token: string
 }
