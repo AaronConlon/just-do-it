@@ -22,8 +22,8 @@ export function LoginDialog() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: 'rivenqinyy@gmail.com',
-      password: '123456',
+      email: '443009976@qq.com',
+      password: '12345678',
     },
   })
 
@@ -95,7 +95,7 @@ export function LoginDialog() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">密码</Label>
-            <PasswordInput {...register('password')} type="password" placeholder="请输入密码" />
+            <PasswordInput {...register('password')} placeholder="请输入密码" />
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
           </div>
           <Button type="submit" className="w-full" disabled={isSubmitting}>

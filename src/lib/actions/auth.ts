@@ -17,6 +17,9 @@ export async function login(data: LoginForm) {
   try {
     console.log('login action:', data)
     data.password = await hashPassword(data.password)
+
+    console.log('data:', data)
+
     const response = await fetch(`${process.env.API_URL}/accounts/login`, {
       method: 'POST',
       headers: {
@@ -28,17 +31,18 @@ export async function login(data: LoginForm) {
     if (!response.ok) {
       throw new Error('登录失败')
     }
-    const responseJson = await response.json()
+    const responseJson: AuthResponse = await response.json()
+
+    console.log('res json:', responseJson)
 
     if (responseJson.code !== 0) {
       return { success: false, error: responseJson.message }
     }
 
     const cookiesRecord = await cookies()
-    const result: AuthResponse = await response.json()
-    cookiesRecord.set('auth', result.data.token)
-    console.log('login success result:', result)
-    return { success: true, user: result.data.user }
+    cookiesRecord.set('auth', responseJson.data.token)
+    console.log('login success result:', responseJson)
+    return { success: true, user: responseJson.data.user }
   } catch (error) {
     console.error(error)
     return { success: false, error: '登录失败' }
@@ -146,6 +150,7 @@ export async function sendUpdatePasswordEmail(email: string) {
 
 export async function updatePassword(token: string, password: string) {
   try {
+    password = await hashPassword(password)
     const response = await fetch(`${process.env.API_URL}/accounts/update-password`, {
       method: 'POST',
       headers: await generateHeaders(),

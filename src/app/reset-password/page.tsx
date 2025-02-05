@@ -78,20 +78,13 @@ export default function ResetPasswordPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">新密码</Label>
-              <PasswordInput
-                id="password"
-                name="password"
-                type="password"
-                required
-                disabled={isLoading}
-              />
+              <PasswordInput id="password" name="password" required disabled={isLoading} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">确认密码</Label>
               <PasswordInput
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password"
                 required
                 disabled={isLoading}
               />
