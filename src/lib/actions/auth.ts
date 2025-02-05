@@ -24,9 +24,16 @@ export async function login(data: LoginForm) {
       },
       body: JSON.stringify(data),
     })
+    console.log('login response:', response)
     if (!response.ok) {
       throw new Error('登录失败')
     }
+    const responseJson = await response.json()
+
+    if (responseJson.code !== 0) {
+      return { success: false, error: responseJson.message }
+    }
+
     const cookiesRecord = await cookies()
     const result: AuthResponse = await response.json()
     cookiesRecord.set('auth', result.data.token)
@@ -110,15 +117,19 @@ export async function updateProfile(data: { username: string; avatar: string }) 
     const result = await response.json()
     return { success: result.code === 0, error: result.message }
   } catch (error) {
+    console.error(error)
     return { success: false, error: '更新失败，请稍后重试' }
   }
 }
 
-export async function resetPassword() {
+export async function sendUpdatePasswordEmail(email: string) {
   try {
-    const response = await fetch(`${process.env.API_URL}/accounts/reset-password`, {
+    const response = await fetch(`${process.env.API_URL}/accounts/send-update-password-email`, {
       method: 'POST',
       headers: await generateHeaders(),
+      body: JSON.stringify({
+        email,
+      }),
     })
 
     if (!response.ok) {
@@ -128,6 +139,7 @@ export async function resetPassword() {
     const result = await response.json()
     return { success: result.code === 0, error: result.message }
   } catch (error) {
+    console.error(error)
     return { success: false, error: '发送失败，请稍后重试' }
   }
 }
@@ -136,9 +148,7 @@ export async function updatePassword(token: string, password: string) {
   try {
     const response = await fetch(`${process.env.API_URL}/accounts/update-password`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await generateHeaders(),
       body: JSON.stringify({ token, password }),
     })
 
@@ -149,6 +159,7 @@ export async function updatePassword(token: string, password: string) {
     const result = await response.json()
     return { success: result.code === 0, error: result.message }
   } catch (error) {
+    console.error(error)
     return { success: false, error: '修改失败，请稍后重试' }
   }
 }

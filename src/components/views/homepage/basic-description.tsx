@@ -46,14 +46,14 @@ export default function BasicDescription() {
         />
       </div>
 
-      <div className="bg-gradient-to-tr from-white via-slate-50 to-gray-50 p-4">
+      <div className="group bg-gradient-to-tr from-white via-slate-50 to-gray-50 p-4">
         <div className="flex flex-wrap gap-4">
           <Image
             src="https://de4965e.webp.li/blog-images/2025/01/8d89461ad25e8a0ec5ae73a056a888d7.svg"
             alt="avatar cover"
             width={400}
             height={400}
-            className="rounded-lg"
+            className="origin-center rounded-lg transition-transform duration-500 group-hover:scale-110"
           />
           <div className="">
             <p className="mt-[100px] w-[420px] max-w-[90%] indent-8 sm:p-4 xl:w-[640px]">

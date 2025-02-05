@@ -6,7 +6,6 @@ import { PropsWithChildren } from 'react'
 import { toast } from 'react-hot-toast'
 import { LuLogOut } from 'react-icons/lu'
 import { PiUserThin } from 'react-icons/pi'
-import { Button } from '../ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,15 +26,15 @@ export function LogoutButton({ children }: PropsWithChildren) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={'ghost'}>{children}</Button>
+        <span className="rounded-full bg-primary p-[2px]">{children}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-32">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>我的账户</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <Link href={'/profile'}>
             <DropdownMenuItem>
-              Profile
+              个人信息
               <DropdownMenuShortcut>
                 <PiUserThin />
               </DropdownMenuShortcut>
@@ -45,7 +44,7 @@ export function LogoutButton({ children }: PropsWithChildren) {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} title="logout">
-          Logout
+          登出账号
           <DropdownMenuShortcut>
             <LuLogOut />
           </DropdownMenuShortcut>
