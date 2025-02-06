@@ -121,13 +121,11 @@ export function RedeemDialog({ appId, price, open, onOpenChange }: RedeemDialogP
             请联系开发者获取兑换码：
             <div className="mt-4 space-y-2 rounded-lg bg-muted p-4">
               <div>微信：{globalConfig.contact.wechat}</div>
-              <div
-                onClick={() => {
-                  console.log('price:', price)
-                  console.log('data:', data?.data, finalPrice)
-                }}
-              >
-                邮箱：{globalConfig.contact.email}
+              <div>
+                邮箱：
+                <a className="underline" href={`mailto:${globalConfig.contact.email}`}>
+                  {globalConfig.contact.email}
+                </a>
               </div>
             </div>
           </DialogDescription>

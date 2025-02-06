@@ -1,4 +1,5 @@
 import { getUser } from '@/lib/actions/auth'
+import { EIsAdmin } from '@/lib/validations/auth'
 import { LoginDialog } from './LoginDialog'
 import { LogoutButton } from './LogoutButton'
 import { RegisterDialog } from './RegisterDialog'
@@ -10,7 +11,7 @@ export default async function Account() {
   return (
     <div className="flex items-center gap-4">
       {user ? (
-        <LogoutButton>
+        <LogoutButton is_admin={user.is_admin === EIsAdmin.YES}>
           <UserNav user={user} />
         </LogoutButton>
       ) : (

@@ -5,9 +5,7 @@ export default function AppsPage() {
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold">应用列表</h1>
-        <p className="mt-2 text-muted-foreground">
-          这里展示了我开发的所有应用，包括 Web 应用、移动应用和桌面应用。
-        </p>
+        <p className="mt-2 text-muted-foreground">有时候我会开发一些应用，在这里你可以看到它们。</p>
       </div>
       <ApplicationContainer title="所有应用" tag="" />
     </div>

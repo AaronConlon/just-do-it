@@ -5,21 +5,27 @@ import { TApp } from '../schemas'
 import { IData } from '../validations/basic'
 import { generateHeaders } from './headers'
 
-export async function getApplications() {
+export async function getApplications(noCache?: boolean) {
+  'use server'
   try {
+    console.log('run getApplications')
     const response = await fetch(`${process.env.API_URL}/apps`, {
       // next: { revalidate: 3600 }, // 1小时缓存
+      next: {
+        tags: ['apps'],
+        revalidate: noCache ? 0 : 60 * 10, // 10分钟缓存
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': noCache ? 'no-cache' : 'public, max-age=600',
+      },
     })
-
-    console.log('raw get apps:', response)
 
     if (!response.ok) {
       throw new Error('获取应用列表失败')
     }
 
     const result: IData<TApp[]> = await response.json()
-
-    console.log('get apps:', result)
 
     if (result.code !== 0) {
       throw new Error(result.message)

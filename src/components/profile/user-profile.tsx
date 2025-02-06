@@ -2,18 +2,22 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { TApp } from '@/lib/schemas'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/lib/utils/date'
 import { AuthResponse } from '@/lib/validations/auth'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface UserProfileProps {
   user: AuthResponse['data']['user']
+  apps: TApp[]
 }
 
-export function UserProfile({ user }: UserProfileProps) {
+export function UserProfile({ user, apps }: UserProfileProps) {
   return (
-    <Card>
+    <Card className="border-none">
       <CardHeader>
         <CardTitle>个人信息</CardTitle>
       </CardHeader>
@@ -48,10 +52,29 @@ export function UserProfile({ user }: UserProfileProps) {
             <span className="text-muted-foreground">注册时间</span>
             <span>{formatDate(user.created_at)}</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">应用数量</span>
-            <span>{user.app_ids?.length || 0}</span>
-          </div>
+
+          {!!apps?.length && (
+            <div className="space-y-2">
+              <span className="text-sm text-muted-foreground">应用</span>
+              <div className="grid grid-cols-3 gap-2">
+                {apps?.map((app) => (
+                  <Link
+                    key={app.id}
+                    href={`/apps/${app.id}`}
+                    className="group flex items-center justify-center rounded-lg border p-2 transition-colors hover:border-primary"
+                  >
+                    <Image
+                      src={app.icon}
+                      alt={app.app_name}
+                      width={32}
+                      height={32}
+                      className="rounded transition-transform group-hover:scale-110"
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -20,7 +20,7 @@ export default async function Page() {
   return (
     <div className="container mx-auto py-8">
       <div className="grid gap-8 md:grid-cols-[1fr_3fr]">
-        <UserProfile user={user} />
+        <UserProfile user={user} apps={apps ?? []} />
         <div className="space-y-6">
           <Tabs defaultValue="apps" className="w-full">
             <TabsList className="w-full max-w-[300px]">

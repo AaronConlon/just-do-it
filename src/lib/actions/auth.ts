@@ -15,11 +15,7 @@ async function hashPassword(password: string): Promise<string> {
 
 export async function login(data: LoginForm) {
   try {
-    console.log('login action:', data)
     data.password = await hashPassword(data.password)
-
-    console.log('data:', data)
-
     const response = await fetch(`${process.env.API_URL}/accounts/login`, {
       method: 'POST',
       headers: {
@@ -69,10 +65,13 @@ export async function getUser(): Promise<AuthResponse['data']['user'] | null> {
     })
 
     const result = await response.json()
+
     if (!response.ok || result.code !== 0) {
+      if (result.code === 401) {
+        cookiesRecord.delete('auth')
+      }
       return null
     }
-
     return result.data
   } catch {
     return null

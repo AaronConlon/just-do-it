@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { toast } from 'react-hot-toast'
 import { LuLogOut } from 'react-icons/lu'
-import { PiUserThin } from 'react-icons/pi'
+import { PiRobotThin, PiUserThin } from 'react-icons/pi'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,12 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 
-export function LogoutButton({ children }: PropsWithChildren) {
+export function LogoutButton({
+  children,
+  is_admin,
+}: PropsWithChildren<{
+  is_admin?: boolean
+}>) {
   const handleLogout = async () => {
     await logout()
     toast.success('已登出')
@@ -40,6 +45,16 @@ export function LogoutButton({ children }: PropsWithChildren) {
               </DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
+          {is_admin && (
+            <Link href={'/admin'}>
+              <DropdownMenuItem>
+                管理后台
+                <DropdownMenuShortcut>
+                  <PiRobotThin />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </Link>
+          )}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

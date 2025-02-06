@@ -27,6 +27,11 @@ export enum EAccountStatus {
   SUSPENDED = 2,
 }
 
+export enum EIsAdmin {
+  NO = 0,
+  YES = 1,
+}
+
 interface AuthData {
   user: {
     username: string
@@ -36,6 +41,7 @@ interface AuthData {
     avatar: string
     id?: number
     created_at: number
+    is_admin: EIsAdmin
   }
   token: string
 }
