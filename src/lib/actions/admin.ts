@@ -2,6 +2,8 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { TApp, TUser } from '../schemas'
+import { DiscountCode, GenerateCodePayload } from '../schemas/discount'
+import { ResultCount } from '../schemas/result'
 import { IData, IPaginationData } from '../validations/basic'
 import { generateHeaders } from './headers'
 
@@ -110,7 +112,7 @@ export async function searchApps(keyword: string) {
 // 新增 getAppAction
 export async function getAppAction(id: number) {
   try {
-    const response = await fetch(`${process.env.API_URL}/apps/${id}`, {
+    const response = await fetch(`${process.env.API_URL}/apps/public/${id}`, {
       method: 'GET',
       headers: await generateHeaders(),
       next: {
@@ -121,6 +123,9 @@ export async function getAppAction(id: number) {
       throw new Error('获取应用失败')
     }
     const result: IData<TApp> = await response.json()
+
+    console.log('get app result:', result)
+
     if (result.code !== 0) {
       return { success: false, error: result.message }
     }
@@ -222,5 +227,86 @@ export async function deleteUser(id: number) {
   } catch (error) {
     console.error('删除用户失败:', error)
     return { success: false, error: '删除用户失败' }
+  }
+}
+
+export async function generateAppCode(payload: GenerateCodePayload) {
+  try {
+    const defaultExpiredAt = new Date()
+    defaultExpiredAt.setFullYear(defaultExpiredAt.getFullYear() + 99)
+
+    const response = await fetch(`${process.env.API_URL}/app/generate-code`, {
+      method: 'POST',
+      headers: await generateHeaders(),
+      body: JSON.stringify({
+        ...payload,
+        expired_at: payload.expired_at || new Date(2099).valueOf(),
+      }),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '生成折扣码失败' }
+    }
+
+    const result: IData<ResultCount> = await response.json()
+    return {
+      success: result.code === 0,
+      error: result.message,
+      data: result.data,
+    }
+  } catch (error) {
+    console.error('生成折扣码失败:', error)
+    return { success: false, error: '生成失败，请稍后重试' }
+  }
+}
+
+export async function deleteAppCode(app_id: number, ids: number[]) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/app/codes/${app_id}`, {
+      method: 'DELETE',
+      headers: await generateHeaders(),
+      body: JSON.stringify({
+        ids,
+      }),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '删除折扣码失败' }
+    }
+
+    const result: IData<ResultCount> = await response.json()
+    return {
+      success: result.code === 0,
+      error: result.message,
+      data: result.data,
+    }
+  } catch (error) {
+    console.error('删除折扣码失败:', error)
+    return { success: false, error: '删除失败，请稍后重试' }
+  }
+}
+
+export async function getAppCodes(appId: number) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/app/codes/${appId}`, {
+      headers: await generateHeaders(),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: '获取折扣码列表失败' }
+    }
+
+    const result: IData<DiscountCode[]> = await response.json()
+
+    console.log('get app codes result:', result)
+
+    return {
+      success: result.code === 0,
+      error: result.message,
+      data: result.data,
+    }
+  } catch (error) {
+    console.error('获取折扣码列表失败:', error)
+    return { success: false, error: '获取失败，请稍后重试' }
   }
 }

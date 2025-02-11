@@ -7,15 +7,20 @@ import { zhCN } from 'date-fns/locale'
 import { ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { PiUserThin } from 'react-icons/pi'
+import { PiLinkThin, PiUserThin } from 'react-icons/pi'
 import Markdown from 'react-markdown'
 
 import { PurchaseButton } from '@/components/apps/purchase-button'
 import { getUser } from '@/lib/actions/auth'
+import Link from 'next/link'
 
 export default async function AppDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const [app, user] = await Promise.all([getApplicationById(id), getUser()])
+
+  console.log('app: ', app)
+  console.log('user: ', user)
+
   // let apps = [] as TApp[]
   if (!app) {
     notFound()
@@ -96,8 +101,18 @@ export default async function AppDetailPage({ params }: { params: Promise<{ id: 
 
         <div className="space-y-6">
           <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold">应用信息</h2>
-
+            <div className="flex items-center justify-between">
+              <h2 className="mb-4 text-xl font-semibold">应用信息</h2>
+              {app.canEdit && (
+                <Link
+                  href={`/admin/apps/edit?id=${app.id}`}
+                  className="flex items-center gap-1 text-primary hover:underline"
+                >
+                  <PiLinkThin />
+                  编辑
+                </Link>
+              )}
+            </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">价格</span>

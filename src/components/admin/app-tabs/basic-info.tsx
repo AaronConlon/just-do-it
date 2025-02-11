@@ -59,6 +59,17 @@ export function BasicInfoTab({ app }: { app: TApp }) {
         tags: data.tags.map((t) => t.value).join(';'),
         categories: data.categories.map((c) => c.value).join(';'),
       }
+
+      // 检查截图和 YouTube 视频链接
+      console.log(formattedData)
+      if (
+        !!formattedData.screenshots?.length === false ||
+        !!formattedData.youtube_video_url?.length === false
+      ) {
+        toast.error('请上传截图并且输入 YouTube 视频链接')
+        return
+      }
+
       const result = await updateApp(app.id, formattedData)
 
       if (!result.success) {

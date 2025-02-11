@@ -39,16 +39,24 @@ export async function getApplications(noCache?: boolean) {
 
 export async function getApplicationById(id: string) {
   try {
-    const response = await fetch(`${process.env.API_URL}/apps/${id}`, {
-      // next: { revalidate: 3600 },
-    })
+    const [appResponse, userResponse] = await Promise.all([
+      fetch(`${process.env.API_URL}/apps/public/${id}`),
+      fetch(`${process.env.API_URL}/accounts/profile`, {
+        headers: await generateHeaders(),
+      }),
+    ])
 
-    if (!response.ok) {
+    if (!appResponse.ok) {
       return null
     }
 
-    const result: IData<TApp> = await response.json()
-    return result.data
+    const appResult: IData<TApp> = await appResponse.json()
+    const userResult: IData<{ is_admin: boolean }> = await userResponse.json()
+
+    return {
+      ...appResult.data,
+      canEdit: userResult.code === 0 && userResult.data?.is_admin,
+    }
   } catch (error) {
     console.error('获取应用详情失败:', error)
     return null

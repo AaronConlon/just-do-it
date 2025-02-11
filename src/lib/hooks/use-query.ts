@@ -5,6 +5,7 @@ interface QueryResult<T> {
   isLoading: boolean
   isError: boolean
   error: Error | null
+  isFetching: boolean
   refetch: () => Promise<void>
 }
 
@@ -18,17 +19,22 @@ export function useQuery<T>(
 ): QueryResult<T> {
   const [data, setData] = useState<T | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
   const fetchData = async () => {
     try {
       setIsLoading(true)
+      if (isFetching === false) {
+        setIsFetching(true)
+      }
       setIsError(false)
       setError(null)
       const result = await queryFn()
       setData(result)
       options?.onSuccess?.(result)
+      setIsFetching(false)
     } catch (e) {
       const err = e instanceof Error ? e : new Error('未知错误')
       setIsError(true)
@@ -50,6 +56,7 @@ export function useQuery<T>(
     isLoading,
     isError,
     error,
+    isFetching,
     refetch: fetchData,
   }
 }

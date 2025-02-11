@@ -1,5 +1,6 @@
 'use client'
 
+import { AppCodes } from '@/components/admin/app-codes'
 import { ArticleTab } from '@/components/admin/app-tabs/article'
 import { BasicInfoTab } from '@/components/admin/app-tabs/basic-info'
 import { Button } from '@/components/ui/button'
@@ -46,12 +47,16 @@ export default function EditAppPage() {
         <TabsList>
           <TabsTrigger value="basic">基本信息</TabsTrigger>
           <TabsTrigger value="article">文章编辑</TabsTrigger>
+          <TabsTrigger value="discount">折扣代码</TabsTrigger>
         </TabsList>
         <TabsContent value="basic" className="space-y-4">
           <BasicInfoTab app={app} />
         </TabsContent>
         <TabsContent value="article" className="space-y-4">
           <ArticleTab app={app} />
+        </TabsContent>
+        <TabsContent value="discount" className="space-y-4">
+          <AppCodes appId={app.id} />
         </TabsContent>
       </Tabs>
     </div>
